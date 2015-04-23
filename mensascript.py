@@ -56,7 +56,6 @@ for i in range(len(dishes)):
         print bcolors.OKBLUE + dishes[i].category.rjust(20), dishes[i].description.ljust(170), dishes[i].price, "Euro", bcolors.ENDC
     else:
         print dishes[i].category.rjust(20), dishes[i].description.ljust(170), dishes[i].price, "Euro"
-        
 print
 for side in sides[::-1]:
     print side.category.rjust(20), side.description.ljust(170)
