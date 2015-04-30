@@ -6,7 +6,7 @@ import re
 
 # read the website
 (stdout, stderr) = Popen(["lynx", "-width 300", "-dump", "http://www.studentenwerk-aachen.de/speiseplaene/vita-t.html"], stdout=PIPE).communicate()
-lines = stdout.split("\n")
+lines = stdout.decode("utf-8").split("\n")
 
 class bcolors:
     HEADER = '\033[95m'
@@ -25,7 +25,7 @@ class Dish():
         self.description= ""
         self.price      = ""
     def extract_price(self, line):
-        return re.search("[0-9],[0-9][0-9] (\xe2\x82\xac|EUR)", line).group()
+        return re.search("[0-9],[0-9][0-9] (\xe2\x82\xac|EUR)".decode("utf-8"), line).group()
     def extract_description(self, line):
         return re.sub(" \^(.(,[a-zA-Z0-9])*|\w+)", "", (line[len(self.category):-len(self.price)] if self.price else line[len(self.category):]).strip())
 
@@ -45,11 +45,11 @@ def main():
                 break
 
     # parse the website information for the side dishe
-    sides = [Dish("Gem\xc3\xbcse/Salat"), Dish("Hauptbeilage")]
+    sides = [Dish("Gemuese/Salat".decode("utf-8")), Dish("Hauptbeilage")]
     i = 0
     for line in lines[::-1]:
         sline = line.strip()
-        if sline.lower().startswith(sides[i].category.lower()) or sline.lower().startswith(sides[i].category.replace("\xc3\xbc", "ue").lower()):
+        if sline.lower().startswith(sides[i].category.lower()) or sline.lower().startswith(sides[i].category.replace("ue", "\xc3\xbc".decode("utf-8")).lower()):
             sides[i].description = sides[i].extract_description(sline)
             if i < len(sides) - 1:
                 i += 1
