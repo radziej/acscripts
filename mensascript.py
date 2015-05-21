@@ -32,24 +32,33 @@ class Dish():
 
 def main():
     # parse the websites information into each dish
-    dishes = [Dish("Tellergericht"), Dish("Vegetarisch"), Dish("Empfehlung des Tages"), Dish("Klassiker"), Dish("Pizza des Tages"), Dish("Pasta"), Dish("Pasta"), Dish("Pasta"), Dish("Wok")]
-    i = 0
+    dishes = [Dish("Tellergericht"), Dish("Vegetarisch"), Dish("Empfehlung des Tages"), Dish("Klassiker"), Dish("Burgergericht"), Dish("Pizza des Tages"), Dish("Pasta"), Dish("Pasta"), Dish("Pasta"), Dish("Wok")]
+    cdishes = dishes[:]
+
     for line in lines:
+        if not cdishes:
+            break
+
         sline = line.strip()
-        if sline.lower().startswith(dishes[i].category.lower()):
-            dishes[i].price       = dishes[i].extract_price(sline)
-            dishes[i].description = dishes[i].extract_description(sline)
-            if i < len(dishes) - 1:
-                i += 1
-            else:
+        for i in range(len(cdishes)):
+            if sline.lower().startswith(cdishes[i].category.lower()):
+                cdishes[i].price       = cdishes[i].extract_price(sline)
+                cdishes[i].description = cdishes[i].extract_description(sline)
+                cdishes.pop(i)
                 break
+
+    # remove missing dishes
+    for dish in cdishes:
+        dishes.remove(dish)
 
     # parse the website information for the side dishe
     sides = [Dish("Gemuese/Salat".decode("utf-8")), Dish("Hauptbeilage")]
     i = 0
     for line in lines[::-1]:
         sline = line.strip()
-        if sline.lower().startswith(sides[i].category.lower()) or sline.lower().startswith(sides[i].category.replace("ue", "\xc3\xbc".decode("utf-8")).lower()):
+        if (sline.lower().startswith(sides[i].category.lower())
+            # hack to avoid rjust spacing issues with unicode characters
+            or sline.lower().startswith(sides[i].category.replace("ue", "\xc3\xbc".decode("utf-8")).lower())):
             sides[i].description = sides[i].extract_description(sline)
             if i < len(sides) - 1:
                 i += 1
