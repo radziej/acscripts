@@ -61,10 +61,10 @@ function cmssw() {
     fi
 
     echo "Loading ${match} ..."
-    source /cvmfs/cms.cern.ch/cmsset_default.sh ;
-    V=${CMSSW_DIR}/${match} ;
+    source /cvmfs/cms.cern.ch/cmsset_default.sh
+    V=${CMSSW_DIR}/${match}
     cd $V && eval `scramv1 runtime -sh` && source /afs/cern.ch/cms/ccs/wm/scripts/Crab/crab.sh ;
     echo "Returning to"
-    cd - ;
+    cd -
     return 0
 }
