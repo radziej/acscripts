@@ -27,7 +27,7 @@ class Dish():
     def extract_price(self, line):
         return re.search("[0-9],[0-9][0-9] (\xe2\x82\xac|EUR)".decode("utf-8"), line).group()
     def extract_description(self, line):
-        return re.sub(" \^(.(,[a-zA-Z0-9])*|\w+)", "", (line[len(self.category):-len(self.price)] if self.price else line[len(self.category):]).strip())
+        return re.sub(" \^[^ ]*", "", (line[len(self.category):-len(self.price)] if self.price else line[len(self.category):]).strip())
 
 
 def main():
