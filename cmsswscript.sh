@@ -32,7 +32,7 @@ function cmssw() {
         return 1
     fi
 
-    local cmssw_versions=`ls ${CMSSW_DIR} | grep CMSSW`
+    local cmssw_versions=`ls -rv ${CMSSW_DIR} | grep CMSSW`
     if [ -z "${cmssw_versions}" ]; then
         echo "No CMSSW versions found!"
         return 1
